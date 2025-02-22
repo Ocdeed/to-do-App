@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TaskMaster Pro</title>
+    <link rel="stylesheet" href="css/styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="css/responsive.css" />
+  </head>
+  <body>
+    <button class="mobile-toggle" aria-label="Toggle menu">
+      <i class="fas fa-bars"></i>
+    </button>
+    <div class="mobile-overlay"></div>
+    <div class="app-container">
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <h1>TaskMaster Pro</h1>
+          <button id="newListBtn" aria-label="Create new list">
+            <i class="fas fa-plus"></i>
+            <span>New List</span>
+          </button>
+        </div>
+        <div class="lists-container" id="listsContainer">
+          <!-- Lists will be dynamically inserted here -->
+        </div>
+        <div class="theme-toggle">
+          <div class="toggle-background"></div>
+          <button id="themeToggleBtn" aria-label="Toggle dark mode">
+            <div class="toggle-icon">
+              <i class="fas fa-sun sun-icon"></i>
+              <i class="fas fa-moon moon-icon"></i>
+            </div>
+            <span class="toggle-text">Theme</span>
+          </button>
+        </div>
+      </aside>
+
+      <main class="main-content">
+        <div class="toolbar">
+          <div class="search-container">
+            <input
+              type="text"
+              id="searchInput"
+              placeholder="Search tasks..."
+              aria-label="Search tasks"
+            />
+            <i class="fas fa-search search-icon"></i>
+          </div>
+          <div class="view-controls">
+            <div class="dropdown">
+              <button id="sortBtn" class="dropdown-toggle">
+                <i class="fas fa-sort"></i>
+                <span>Sort</span>
+              </button>
+              <div class="dropdown-menu" id="sortMenu">
+                <button data-sort="title">
+                  <i class="fas fa-font"></i> Title
+                </button>
+                <button data-sort="dueDate">
+                  <i class="fas fa-calendar"></i> Due Date
+                </button>
+                <button data-sort="priority">
+                  <i class="fas fa-flag"></i> Priority
+                </button>
+                <button data-sort="created">
+                  <i class="fas fa-clock"></i> Created
+                </button>
+              </div>
+            </div>
+            <div class="dropdown">
+              <button id="filterBtn" class="dropdown-toggle">
+                <i class="fas fa-filter"></i>
+                <span>Filter</span>
+              </button>
+              <div class="dropdown-menu" id="filterMenu">
+                <div class="filter-section">
+                  <h4>Priority</h4>
+                  <button data-filter="priority" data-value="high">High</button>
+                  <button data-filter="priority" data-value="medium">
+                    Medium
+                  </button>
+                  <button data-filter="priority" data-value="low">Low</button>
+                </div>
+                <div class="filter-section">
+                  <h4>Due Date</h4>
+                  <button data-filter="dueDate" data-value="today">
+                    Today
+                  </button>
+                  <button data-filter="dueDate" data-value="upcoming">
+                    Upcoming
+                  </button>
+                  <button data-filter="dueDate" data-value="overdue">
+                    Overdue
+                  </button>
+                </div>
+                <div class="filter-section">
+                  <h4>Status</h4>
+                  <button data-filter="completed" data-value="true">
+                    Completed
+                  </button>
+                  <button data-filter="completed" data-value="false">
+                    Active
+                  </button>
+                </div>
+              </div>
+            </div>
+            <button id="viewToggleBtn" title="Change view">
+              <i class="fas fa-th-list"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="tasks-container" id="tasksContainer">
+          <!-- Tasks will be dynamically inserted here -->
+        </div>
+
+        <button class="add-task-btn" id="addTaskBtn" aria-label="Add new task">
+          <i class="fas fa-plus"></i>
+          <span>New Task</span>
+        </button>
+      </main>
+    </div>
+
+    <div class="modal" id="taskModal">
+      <div class="modal-content">
+        <h2 id="modalTitle">Add Task</h2>
+        <form id="taskForm">
+          <input type="text" id="taskTitle" placeholder="Task Title" required />
+          <textarea id="taskDescription" placeholder="Description"></textarea>
+          <div class="datetime-container">
+            <div class="date-picker">
+              <label>
+                <i class="fas fa-calendar-alt"></i>
+                Due Date
+              </label>
+              <input type="date" id="taskDueDate" />
+            </div>
+            <div class="time-picker">
+              <label>
+                <i class="fas fa-clock"></i>
+                Time Limit
+              </label>
+              <div class="time-range">
+                <div class="time-input start">
+                  <span class="time-label">Start</span>
+                  <input type="time" id="taskStartTime" />
+                  <i class="fas fa-sun time-icon"></i>
+                </div>
+                <div class="time-separator">
+                  <i class="fas fa-arrow-right"></i>
+                </div>
+                <div class="time-input end">
+                  <span class="time-label">End</span>
+                  <input type="time" id="taskEndTime" />
+                  <i class="fas fa-moon time-icon"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+          <select id="taskPriority">
+            <option value="low">Low Priority</option>
+            <option value="medium">Medium Priority</option>
+            <option value="high">High Priority</option>
+          </select>
+          <input
+            type="text"
+            id="taskTags"
+            placeholder="Tags (comma-separated)"
+          />
+          <div class="modal-buttons">
+            <button type="button" id="cancelTaskBtn">Cancel</button>
+            <button type="submit">Save</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="modal" id="listModal">
+      <div class="modal-content">
+        <h2><i class="fas fa-plus-circle"></i> Create New List</h2>
+        <form id="listForm">
+          <div class="form-group">
+            <input
+              type="text"
+              id="listName"
+              placeholder=" "
+              required
+              maxlength="50"
+              autocomplete="off"
+            />
+            <label for="listName">List Name</label>
+            <i class="fas fa-list input-icon"></i>
+            <span class="character-count">0/50</span>
+          </div>
+
+          <div class="list-creation-section">
+            <h3><i class="fas fa-icons"></i> Choose an Icon</h3>
+            <div class="selection-grid">
+              <button
+                type="button"
+                class="selection-option icon-option active"
+                data-icon="fa-list-ul"
+              >
+                <i class="fas fa-list-ul"></i>
+              </button>
+              <button
+                type="button"
+                class="selection-option icon-option"
+                data-icon="fa-tasks"
+              >
+                <i class="fas fa-tasks"></i>
+              </button>
+              <button
+                type="button"
+                class="selection-option icon-option"
+                data-icon="fa-clipboard-list"
+              >
+                <i class="fas fa-clipboard-list"></i>
+              </button>
+              <button
+                type="button"
+                class="selection-option icon-option"
+                data-icon="fa-check-square"
+              >
+                <i class="fas fa-check-square"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="list-creation-section">
+            <h3><i class="fas fa-palette"></i> Choose a Color</h3>
+            <div class="selection-grid">
+              <button
+                type="button"
+                class="selection-option color-option active"
+                data-color="#4a90e2"
+                style="background-color: #4a90e2"
+              ></button>
+              <button
+                type="button"
+                class="selection-option color-option"
+                data-color="#27ae60"
+                style="background-color: #27ae60"
+              ></button>
+              <button
+                type="button"
+                class="selection-option color-option"
+                data-color="#e74c3c"
+                style="background-color: #e74c3c"
+              ></button>
+              <button
+                type="button"
+                class="selection-option color-option"
+                data-color="#f39c12"
+                style="background-color: #f39c12"
+              ></button>
+            </div>
+          </div>
+
+          <div class="modal-buttons">
+            <button type="button" id="cancelListBtn">Cancel</button>
+            <button type="submit" class="create-list-btn">
+              <i class="fas fa-plus"></i> Create List
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script type="module" src="js/app.js"></script>
+  </body>
+</html>
