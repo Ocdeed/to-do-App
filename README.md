@@ -141,7 +141,7 @@ The application is optimized for performance:
 
 ## Contact 📫
 
-Your Name - your.email@example.com
+Your Name - ocdeed76@gmail.com
 Project Link: https://github.com/Ocdeed/to-do-App
 
 ---
